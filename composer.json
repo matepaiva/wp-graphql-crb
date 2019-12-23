@@ -1,0 +1,27 @@
+{
+    "name": "mpaiva/wp-graphql-crb",
+    "description": "Wordpress wrapper to expose Carbon Fields to WpGraphQL queries",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matheus Paiva",
+            "email": "mmccpp@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:matepaiva/carbon-fields.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WpGraphQLCrb\\": "src/"
+        }
+    },
+    "require": {
+        "htmlburger/carbon-fields": "dev-exopse_registered_fields",
+        "wp-graphql/wp-graphql": "^0.5.1"
+    }
+}
