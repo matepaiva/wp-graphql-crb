@@ -69,7 +69,8 @@ class Field
     return $this->field->get_base_name();
   }
 
-  public function getOptions() {
+  public function getOptions()
+  {
     return $this->field->get_options();
   }
 
@@ -152,7 +153,16 @@ class Field
         }
 
         if ($object instanceof Term) {
-          return \get_taxonomy($object->taxonomyName)->graphql_single_name;
+          $taxonomy_name = \get_taxonomy($object->taxonomyName)->graphql_single_name;
+          if ($taxonomy_name === 'category') {
+            return 'Category';
+          }
+
+          if ($taxonomy_name === 'tag') {
+            return 'Tag';
+          }
+
+          return $taxonomy_name;
         }
 
         if ($object instanceof Comment) {
