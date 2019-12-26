@@ -2,7 +2,6 @@
 
 namespace WpGraphQLCrb;
 
-use Carbon_Fields\Container\Container;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQL\Data\DataSource;
@@ -12,6 +11,30 @@ class MetaResolver
   public static function getScalar($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
   {
     return $value;
+  }
+
+  public static function getComplex($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
+  {
+    $fields = $field->getFields();
+    return array_map(function ($val) use ($fields, $container, $args, $context, $info) {
+      $complex_item = [];
+      foreach ($fields as $f) {
+        $field = Field::create($f);
+        $name = $field->getBaseName();
+        $inner_value = $val[$name];
+        $resolver_name = $field->getResolverName();
+        $complex_item[$name] = call_user_func(
+          [MetaResolver::class, $resolver_name],
+          $inner_value,
+          $field,
+          $container,
+          $args,
+          $context,
+          $info
+        );
+      }
+      return $complex_item;
+    }, $value);
   }
 
   public static function getMediaGallery($gallery_ids, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)

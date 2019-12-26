@@ -17,14 +17,15 @@ class Field
 
   private static $blacklisted_fields = ['html', 'separator'];
 
-  public function __construct(CrbField $field)
+  public function __construct(CrbField $field, String $recursiveType)
   {
     $this->field = $field;
+    $this->recursiveType = $recursiveType;
   }
 
-  static public function create(CrbField $field)
+  static public function create(CrbField $field, String $recursiveType = '')
   {
-    return new Self($field);
+    return new Self($field, $recursiveType);
   }
 
   public function getDescription()
@@ -59,6 +60,9 @@ class Field
       case 'association':
         return ['list_of' => $this->getTypeFromAssociation()];
 
+      case 'complex':
+        return ['list_of' => $this->getTypeFromComplex()];
+
       case 'checkbox':
         return 'Boolean';
 
@@ -82,6 +86,10 @@ class Field
     return [MetaResolver::class, $this->getResolverName()];
   }
 
+  public function getFields() {
+    return $this->field->get_fields();
+  }
+
   private function getTextType()
   {
     $attributes = $this->field->get_attributes();
@@ -102,10 +110,14 @@ class Field
     return $this->field->get_type();
   }
 
-  private function getResolverName()
+  public function getResolverName()
   {
     if ($this->getCrbType() === 'association') {
       return 'getAssociation';
+    }
+
+    if ($this->getCrbType() === 'complex') {
+      return 'getComplex';
     }
 
     $type = $this->getType();
@@ -188,6 +200,30 @@ class Field
     ]);
 
     return $union_name;
+  }
+
+  private function getTypeFromComplex()
+  {
+    $complex_prefix = $this->recursiveType ? $this->recursiveType : 'Complex';
+    $type = $complex_prefix . '_' . $this->getBaseName();
+
+    $fields = array_reduce($this->field->get_fields(), function($fields, $f) use ($type) {
+      $field = Field::create($f, $type);
+
+      $fields[$field->getBaseName()] = [
+        'type' => $field->getType(),
+        'description' => $field->getDescription()
+      ];
+
+      return $fields;
+    }, []);
+
+    register_graphql_object_type($type, [
+      'description' => $this->getDescription(),
+      'fields' => $fields,
+    ]);
+
+    return $type;
   }
 
   private function getGraphQLTypeFromAssociationType($type)
