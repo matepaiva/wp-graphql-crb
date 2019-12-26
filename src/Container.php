@@ -82,6 +82,24 @@ class Container
           ],
         ],
       ]);
+
+      register_graphql_object_type('Crb_Set', [
+        'description' => \__("The option/radio", 'app'),
+        'fields' => [
+          'label' => [
+            'type' => 'String',
+            'description' => \__('The label of the option', 'app'),
+          ],
+          'value' => [
+            'type' => 'Boolean',
+            'description' => \__('The value indicates if the option is selected or not', 'app'),
+          ],
+          'id' => [
+            'type' => 'String',
+            'description' => \__('The id of the option', 'app'),
+          ],
+        ],
+      ]);
     }
   }
 

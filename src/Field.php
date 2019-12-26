@@ -50,6 +50,9 @@ class Field
       case 'multiselect':
         return ['list_of' => 'Crb_Select'];
 
+      case 'set':
+        return ['list_of' => 'Crb_Set'];
+
       case 'media_gallery':
         return ['list_of' => 'mediaItem'];
 
@@ -115,12 +118,19 @@ class Field
       case 'String':
       case 'Boolean':
         return 'getScalar';
+
       case '{"list_of":"mediaItem"}':
         return 'getMediaGallery';
+
+      case '{"list_of":"Crb_Set"}':
+        return 'getSet';
+
       case 'Crb_Select':
         return 'getSelect';
+
       case '{"list_of":"Crb_Select"}':
         return 'getMultiSelect';
+
       default:
         return 'getNull';
     }

@@ -45,6 +45,21 @@ class MetaResolver
     }, $values);
   }
 
+  public static function getSet($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
+  {
+    $values = $value ?? [];
+    $options = $field->getOptions() ?? [];
+    $option_keys = array_keys($options);
+
+    return array_map(function ($key) use ($values, $options) {
+      return [
+        'id' => $key,
+        'value' => in_array($key, $values),
+        'label' => $options[$key] ?? $key,
+      ];
+    }, $option_keys);
+  }
+
   public static function getAssociation($assocations, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
   {
     return array_map(function ($assocation) use ($context) {
