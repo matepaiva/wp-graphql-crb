@@ -13,6 +13,11 @@ class MetaResolver
     return $value;
   }
 
+  public static function getFloat($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
+  {
+    return floatval($value);
+  }
+
   public static function getComplex($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
   {
     $fields = $field->getFields();

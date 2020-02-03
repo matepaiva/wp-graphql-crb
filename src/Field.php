@@ -130,6 +130,8 @@ class Field
       case 'String':
       case 'Boolean':
         return 'getScalar';
+      case 'Float':
+        return 'getFloat';
 
       case '{"list_of":"mediaItem"}':
         return 'getMediaGallery';
