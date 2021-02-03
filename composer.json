@@ -9,12 +9,6 @@
             "email": "mmccpp@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:matepaiva/carbon-fields.git"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "WpGraphQLCrb\\": "src/"
