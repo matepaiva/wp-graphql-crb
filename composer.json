@@ -20,7 +20,7 @@
             "WpGraphQLCrb\\": "src/"
         }
     },
-    "require-dev": {
+    "require": {
         "htmlburger/carbon-fields": "^3.2",
         "wp-graphql/wp-graphql": "^1.1"
     }
