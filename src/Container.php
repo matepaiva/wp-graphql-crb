@@ -6,7 +6,7 @@ namespace WpGraphQLCrb;
  * Load composer dependencies.
  */
 if (file_exists('../vendor/autoload.php')) {
-	require_once '../vendor/autoload.php';
+  require_once '../vendor/autoload.php';
 }
 
 use Carbon_Fields\Container\Container as CrbContainer;
@@ -35,7 +35,7 @@ class Container
 
   private function registerField(Field $field)
   {
-    $roots = $this->getGraphQLRoot();
+    $roots = $this->container->type === 'theme_options' ? ['Crb_ThemeOptions'] : $this->getGraphQLRoot();
     $field_name = $field->getBaseName();
     $options = [
       'type' => $field->getType($field),
@@ -50,8 +50,10 @@ class Container
 
   public function graphqlRegisterTypes()
   {
-    Container::registerStaticObjectTypes();
-    Container::$is_first_time = false;
+    if (Container::$is_first_time) {
+      Container::$is_first_time = false;
+      Container::registerStaticObjectTypes();
+    }
     $this->registerFields();
   }
 
@@ -64,43 +66,57 @@ class Container
 
   static function registerStaticObjectTypes()
   {
-    if (Container::$is_first_time) {
-      register_graphql_object_type('Crb_Select', [
-        'description' => \__("The selected option/radio", 'app'),
-        'fields' => [
-          'label' => [
-            'type' => 'String',
-            'description' => \__('The label of the option', 'app'),
-          ],
-          'value' => [
-            'type' => 'String',
-            'description' => \__('The value of the option', 'app'),
-          ],
-          'id' => [
-            'type' => 'String',
-            'description' => \__('The value of the option', 'app'),
-          ],
-        ],
-      ]);
+    register_graphql_object_type('Crb_ThemeOptions', [
+      'description' => \__("All the Carbon Field Theme Options", 'app'),
+      'fields' => [],
+    ]);
 
-      register_graphql_object_type('Crb_Set', [
-        'description' => \__("The option/radio", 'app'),
-        'fields' => [
-          'label' => [
-            'type' => 'String',
-            'description' => \__('The label of the option', 'app'),
-          ],
-          'value' => [
-            'type' => 'Boolean',
-            'description' => \__('The value indicates if the option is selected or not', 'app'),
-          ],
-          'id' => [
-            'type' => 'String',
-            'description' => \__('The id of the option', 'app'),
-          ],
+    register_graphql_field(
+      'RootQuery',
+      'crb_ThemeOptions',
+      [
+        'type' => 'Crb_ThemeOptions',
+        'resolve' => function ($src) {
+          return [];
+        }
+      ]
+    );
+
+    register_graphql_object_type('Crb_Select', [
+      'description' => \__("The selected option/radio", 'app'),
+      'fields' => [
+        'label' => [
+          'type' => 'String',
+          'description' => \__('The label of the option', 'app'),
         ],
-      ]);
-    }
+        'value' => [
+          'type' => 'String',
+          'description' => \__('The value of the option', 'app'),
+        ],
+        'id' => [
+          'type' => 'String',
+          'description' => \__('The value of the option', 'app'),
+        ],
+      ],
+    ]);
+
+    register_graphql_object_type('Crb_Set', [
+      'description' => \__("The option/radio", 'app'),
+      'fields' => [
+        'label' => [
+          'type' => 'String',
+          'description' => \__('The label of the option', 'app'),
+        ],
+        'value' => [
+          'type' => 'Boolean',
+          'description' => \__('The value indicates if the option is selected or not', 'app'),
+        ],
+        'id' => [
+          'type' => 'String',
+          'description' => \__('The id of the option', 'app'),
+        ],
+      ],
+    ]);
   }
 
   public function getGraphQLResolver(Field $field)

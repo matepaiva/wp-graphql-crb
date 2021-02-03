@@ -8,7 +8,7 @@ use WPGraphQL\Data\DataSource;
 
 class MetaResolver
 {
-  public static function getScalar($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
+  public static function getScalar($value, Field $field, Container $container, $args = null, AppContext $context = null, ResolveInfo $info = null)
   {
     return $value;
   }
