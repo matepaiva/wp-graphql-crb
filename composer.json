@@ -21,7 +21,7 @@
         }
     },
     "require-dev": {
-        "htmlburger/carbon-fields": "dev-exopse_registered_fields",
-        "wp-graphql/wp-graphql": "^0.5.1"
+        "htmlburger/carbon-fields": "^3.2",
+        "wp-graphql/wp-graphql": "^1.1"
     }
 }
