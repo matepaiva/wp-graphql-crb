@@ -1,7 +1,7 @@
 {
     "name": "matepaiva/wp-graphql-crb",
     "description": "Wordpress wrapper to expose Carbon Fields to WpGraphQL queries",
-    "type": "vcs",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
