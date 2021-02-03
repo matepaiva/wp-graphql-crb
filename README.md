@@ -5,30 +5,8 @@ A Wordpress wrapper to expose Carbon Fields to WpGraphQL queries.
 ## Usage
 
 1. First you have to install Carbon Fields and WpGraphQL.
-2. As this package is not published at Packagist yet, you must add the repository to your composer:
-
-```json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:matepaiva/wp-graphql-crb.git"
-    }
-  ]
-}
-```
-
-3. Add the package to the required packages in your composer:
-
-```json
-{
-  "require": {
-    "matepaiva/wp-graphql-crb": "dev-master"
-  }
-}
-```
-
-4. Wrap every Carbon Field container that you want to expose via GraphQL with the static method `WpGraphQLCrb\Container::register`. For example:
+1. Then install this package via packagist: `composer require matepaiva/wp-graphql-crb`
+1. Wrap every Carbon Field container that you want to expose via GraphQL with the static method `WpGraphQLCrb\Container::register`. For example:
 
 ```php
   <?php
@@ -63,39 +41,6 @@ A Wordpress wrapper to expose Carbon Fields to WpGraphQL queries.
 ```
 
 > Note: This is just the first version. There is a lot of work to be done. This packages exposes all the fields of the container, if the container type is `post_meta`, `term_meta`, or `user`.
-
-# Important: about `Association_Field`!
-
-To make it work, I had to modify the original Carbon Fields package. Currently the `Carbon_Fields\Field\Association_Field` don't expose the `types` of the association, so it is not possible to make the GraphQL Union. To make this happen, I forked the original package and added a getter method in the `Association_Field` class:
-
-```php
-/**
-	 * Get the types.
-	 *
-	 * @return  array $types New types
-	 */
-	public function get_types() {
-		return $this->types;
-	}
-```
-
-I think this is the only way to get the `types` of the `Association_Field` and I hope that this change will be included in the next version, as it has very low impact to the package and a very high benefit to this integration.
-
-If you need the `Association_Field` exposed in the GraphQL queries right now, you can use my temporary repository. Just add it to your `composer.json`:
-
-```json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:matepaiva/carbon-fields.git"
-    }
-  ],
-  "require": {
-    "htmlburger/carbon-fields": "dev-exopse_registered_fields"
-  }
-}
-```
 
 ## Example
 
