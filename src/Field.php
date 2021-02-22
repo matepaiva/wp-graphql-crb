@@ -41,34 +41,45 @@ class Field
   public function getType()
   {
     switch ($this->getCrbType()) {
+
       case 'text':
-        return $this->getTextType();
+        $type = $this->getTextType();
+        break;
 
       case 'radio':
       case 'select':
-        return 'Crb_Select';
-
+        $type = 'Crb_Select';
+        break;
+      
       case 'multiselect':
-        return ['list_of' => 'Crb_Select'];
-
+        $type = ['list_of' => 'Crb_Select'];
+        break;
+        
       case 'set':
-        return ['list_of' => 'Crb_Set'];
-
+        $type = ['list_of' => 'Crb_Set'];
+        break;
+        
       case 'media_gallery':
-        return ['list_of' => 'mediaItem'];
-
+        $type = ['list_of' => 'mediaItem'];
+        break;
+        
       case 'association':
-        return ['list_of' => $this->getTypeFromAssociation()];
-
+        $type = ['list_of' => $this->getTypeFromAssociation()];
+        break;
+        
       case 'complex':
-        return ['list_of' => $this->getTypeFromComplex()];
-
+        $type = ['list_of' => $this->getTypeFromComplex()];
+        break;
+        
       case 'checkbox':
-        return 'Boolean';
+        $type = 'Boolean';
+        break;
 
       default:
-        return 'String';
+      $type = 'String';
     }
+
+    return apply_filters('wp_graphql_crb_type', $type, $this->getCrbType());
   }
 
   public function getBaseName()
@@ -129,25 +140,34 @@ class Field
     switch ($type) {
       case 'String':
       case 'Boolean':
-        return 'getScalar';
+        $resolver_name = 'getScalar';
+        break;
+
       case 'Float':
-        return 'getFloat';
-
+        $resolver_name = 'getFloat';
+        break;
+        
       case '{"list_of":"mediaItem"}':
-        return 'getMediaGallery';
-
+        $resolver_name = 'getMediaGallery';
+        break;
+        
       case '{"list_of":"Crb_Set"}':
-        return 'getSet';
-
+        $resolver_name = 'getSet';
+        break;
+        
       case 'Crb_Select':
-        return 'getSelect';
-
+        $resolver_name = 'getSelect';
+        break;
+        
       case '{"list_of":"Crb_Select"}':
-        return 'getMultiSelect';
-
+        $resolver_name = 'getMultiSelect';
+        break;
+        
       default:
-        return 'getNull';
+      $resolver_name = 'getNull';
     }
+
+    return apply_filters('wp_graphql_crb_resolver_name', $resolver_name, $type);
   }
 
   private function getTypeFromAssociation()
