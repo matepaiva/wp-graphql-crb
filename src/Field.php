@@ -193,7 +193,7 @@ class Field
             return 'Post';
           }
 
-          return $graphql_single_name;
+          return ucfirst($graphql_single_name);
         }
 
         if ($object instanceof Term) {
@@ -206,7 +206,7 @@ class Field
             return 'Tag';
           }
 
-          return $taxonomy_name;
+          return ucfirst($taxonomy_name);
         }
 
         if ($object instanceof Comment) {
