@@ -179,33 +179,50 @@ class Container
       $types = [$types];
     }
 
-    return array_map(function ($type) {
+    $roots = array_reduce($types, function ($graphql_types, $type) {
       switch ($this->container->type) {
         case 'post_meta':
-          return $this->getGraphQLPostTypeRoot($type);
-
+          $graphql_type = $this->getGraphQLPostTypeRoot($type);
+          break;
+          
         case 'term_meta':
-          return $this->getGraphQLTermTypeRoot($type);
-
+          $graphql_type = $this->getGraphQLTermTypeRoot($type);
+          break;
+          
         case 'user_meta':
-          return 'User';
+          $graphql_type = 'User';
+          break;
 
         default:
-          return 'Post';
+          $graphql_type = 'Post';
       }
-    }, $types);
+
+      if(isset($graphql_type)) {
+        $graphql_types[] = $graphql_type;
+      }
+
+      return $graphql_types;
+    }, []);
+
+    return $roots;
   }
 
   private function getGraphQLPostTypeRoot(String $type)
   {
     $post_type_object = \get_post_type_object($type);
 
-    return $post_type_object->graphql_single_name;
+    $graphql_type = isset($post_type_object->graphql_single_name) ? $post_type_object->graphql_single_name : null;
+
+    return $graphql_type;
   }
 
   private function getGraphQLTermTypeRoot(String $type)
   {
-    return \get_taxonomy($type)->graphql_single_name;
+    $taxonomy_object = \get_taxonomy($type);
+
+    $graphql_type = isset($taxonomy_object->graphql_single_name) ? $taxonomy_object->graphql_single_name : null;
+
+    return $graphql_type;
   }
 
   private function getFields()
