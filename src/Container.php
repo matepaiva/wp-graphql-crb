@@ -218,7 +218,7 @@ class Container
 
   private function getGraphQLTermTypeRoot(String $type)
   {
-    $taxonomy_object = \get_taxonomy($type)->graphql_single_name;
+    $taxonomy_object = \get_taxonomy($type);
 
     $graphql_type = isset($taxonomy_object->graphql_single_name) ? $taxonomy_object->graphql_single_name : null;
 
