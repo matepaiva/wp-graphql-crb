@@ -189,22 +189,11 @@ class Field
         if ($object instanceof Post) {
           $graphql_single_name = \get_post_type_object($object->post_type)->graphql_single_name;
 
-          if ($graphql_single_name === 'post') {
-            return 'Post';
-          }
-
           return ucfirst($graphql_single_name);
         }
 
         if ($object instanceof Term) {
           $taxonomy_name = \get_taxonomy($object->taxonomyName)->graphql_single_name;
-          if ($taxonomy_name === 'category') {
-            return 'Category';
-          }
-
-          if ($taxonomy_name === 'tag') {
-            return 'Tag';
-          }
 
           return ucfirst($taxonomy_name);
         }
