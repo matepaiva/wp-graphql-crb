@@ -21,6 +21,8 @@ class Container
 {
   private static $is_first_time = true;
 
+  private static $is_first_time_theme_options = true;
+
   public function __construct(CrbContainer $container)
   {
     $this->container = $container;
@@ -54,6 +56,12 @@ class Container
       Container::$is_first_time = false;
       Container::registerStaticObjectTypes();
     }
+
+    if ($this->container->type === 'theme_options' && Container::$is_first_time_theme_options) {
+      Container::$is_first_time_theme_options = false;
+      Container::registerStaticThemeOptionObjectTypes();
+    }
+
     $this->registerFields();
   }
 
@@ -64,12 +72,14 @@ class Container
     }
   }
 
-  static function registerStaticObjectTypes()
+  static function registerStaticThemeOptionObjectTypes()
   {
-    register_graphql_object_type('Crb_ThemeOptions', [
-      'description' => \__("All the Carbon Field Theme Options", 'app'),
-      'fields' => [],
-    ]);
+    register_graphql_object_type(
+        'Crb_ThemeOptions', [
+        'description' => \__("All the Carbon Field Theme Options", 'app'),
+        'fields' => [],
+      ]
+    );
 
     register_graphql_field(
       'RootQuery',
@@ -81,7 +91,10 @@ class Container
         }
       ]
     );
+  }
 
+  static function registerStaticObjectTypes()
+  {
     register_graphql_object_type('Crb_Select', [
       'description' => \__("The selected option/radio", 'app'),
       'fields' => [
