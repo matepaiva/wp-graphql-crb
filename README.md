@@ -4,7 +4,7 @@ A Wordpress wrapper to expose Carbon Fields to WpGraphQL queries.
 
 ## Important
 
-This is just the first version. There is a lot of work to be done. This packages exposes all the fields of the container, if the container type is `post_meta`, `term_meta`, `user` or `theme_options`.
+This is just the first version. There is a lot of work to be done. This packages exposes all the fields of the container, if the container type is `post_meta`, `term_meta`, `user_meta`, `comment_meta` or `theme_options`.
 
 > Note: This is a very experimental version, so it is probably shipped with bugs. 
 
