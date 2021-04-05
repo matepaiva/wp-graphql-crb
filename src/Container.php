@@ -166,7 +166,7 @@ class Container
 
         case 'comment_meta':
           return function (Comment $comment, $args, AppContext $context, ResolveInfo $info) use ($field, $cb) {
-            $value = carbon_get_comment_meta($comment->commentId, $field->getBaseName());
+            $value = carbon_get_comment_meta($comment->databaseId, $field->getBaseName());
             return $cb($value, $field, $this, $args, $context, $info);
           };
 
