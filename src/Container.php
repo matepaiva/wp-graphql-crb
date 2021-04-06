@@ -16,6 +16,7 @@ use WPGraphQL\AppContext;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Model\Term;
 use WPGraphQL\Model\User;
+use WPGraphQL\Model\Comment;
 
 class Container
 {
@@ -163,6 +164,12 @@ class Container
             return $cb($value, $field, $this, $args, $context, $info);
           };
 
+        case 'comment_meta':
+          return function (Comment $comment, $args, AppContext $context, ResolveInfo $info) use ($field, $cb) {
+            $value = carbon_get_comment_meta($comment->databaseId, $field->getBaseName());
+            return $cb($value, $field, $this, $args, $context, $info);
+          };
+
         case 'theme_options':
           return function () use ($field, $cb) {
             $value = carbon_get_theme_option($field->getBaseName());
@@ -204,6 +211,10 @@ class Container
           
         case 'user_meta':
           $graphql_type = 'User';
+          break;
+
+        case 'comment_meta':
+          $graphql_type = 'Comment';
           break;
 
         default:
