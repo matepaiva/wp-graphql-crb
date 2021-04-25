@@ -10,7 +10,14 @@ class MetaResolver
 {
   public static function getScalar($value, Field $field, Container $container, $args = null, AppContext $context = null, ResolveInfo $info = null)
   {
-    return $value;
+    switch ($field->getCrbType()) {
+      case 'rich_text':
+        return apply_filters('the_content', $value);
+      
+      default:
+        return $value;
+    }
+
   }
 
   public static function getFloat($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)

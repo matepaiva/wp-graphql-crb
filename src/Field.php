@@ -116,7 +116,7 @@ class Field
     }
   }
 
-  private function getCrbType()
+  public function getCrbType()
   {
     return $this->field->get_type();
   }
