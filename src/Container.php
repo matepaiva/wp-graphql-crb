@@ -171,9 +171,9 @@ class Container
           };
 
         case 'theme_options':
-          return function () use ($field, $cb) {
+          return function ($_, $args, AppContext $context, ResolveInfo $info) use ($field, $cb) {
             $value = carbon_get_theme_option($field->getBaseName());
-            return $cb($value, $field, $this);
+            return $cb($value, $field, $this, $args, $context, $info);
           };
 
         default:
