@@ -51,6 +51,10 @@ class Field
         $type = 'Crb_Select';
         break;
       
+      case 'image':
+        $type = 'mediaItem';
+        break;
+      
       case 'multiselect':
         $type = ['list_of' => 'Crb_Select'];
         break;
@@ -147,6 +151,10 @@ class Field
         $resolver_name = 'getFloat';
         break;
         
+      case 'mediaItem':
+        $resolver_name = 'getMediaItem';
+        break;
+      
       case '{"list_of":"mediaItem"}':
         $resolver_name = 'getMediaGallery';
         break;

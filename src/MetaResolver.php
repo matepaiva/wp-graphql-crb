@@ -49,6 +49,11 @@ class MetaResolver
     }, $value);
   }
 
+  public static function getMediaItem($value, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
+  {
+    return DataSource::resolve_post_object((int)$value, $context);
+  }
+
   public static function getMediaGallery($gallery_ids, Field $field, Container $container, $args, AppContext $context, ResolveInfo $info)
   {
     return array_map(function ($id) use ($context) {
