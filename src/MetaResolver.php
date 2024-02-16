@@ -33,6 +33,7 @@ class MetaResolver
       foreach ($fields as $f) {
         $field = Field::create($f);
         $name = $field->getBaseName();
+        if(!array_key_exists($name, $val)) continue;
         $inner_value = $val[$name];
         $resolver_name = $field->getResolverName();
         $complex_item[$name] = call_user_func(
